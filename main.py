@@ -20,7 +20,7 @@ def get_critics():
 def extract_reviews(html):
     soup = BeautifulSoup(html)
     reviews = soup.findAll('li', {'class': lambda x: 'review critic_review' in x})
-    print 'extracting', len(reviews), 'from', soup.find('title').text
+    print 'extracting', len(reviews), soup.find('title').text
     result = {}
     for review in reviews:
         source = review.find('div', {'class': 'source'}).text
@@ -38,9 +38,9 @@ def get_correlations(critics):
         for film, score in critic_films.iteritems():
             critic_scores.append(score)
             my_scores.append(FILMS[film])
-        if len(my_scores) > 2:
+        if len(my_scores) > 3:
             correlation = pearsonr(critic_scores, my_scores)[0]
-            if correlation > 0:
+            if correlation > 0.3:
                 correlations[critic] = correlation
     return correlations
 
