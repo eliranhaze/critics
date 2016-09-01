@@ -39,6 +39,7 @@ FILMS = {
     'http://www.metacritic.com/movie/persepolis': 8.5,
     'http://www.metacritic.com/movie/fargo': 8.5,
     'http://www.metacritic.com/movie/pans-labyrinth': 8.5,
+    'http://www.metacritic.com/movie/brazil': 8.2,
     'http://www.metacritic.com/movie/about-elly-2009': 8,
     'http://www.metacritic.com/movie/the-salt-of-the-earth': 8,
     'http://www.metacritic.com/movie/the-tale-of-the-princess-kaguya': 8,
