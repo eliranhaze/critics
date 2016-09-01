@@ -5,6 +5,7 @@ from films import FILMS
 
 MIN_CORRELATION = 0.4
 MIN_FILM_REVIEWS = 6
+MIN_FILM_SCORE = 8.5
 
 session = requests.Session()
 session.headers['User-Agent'] = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36'
@@ -46,6 +47,7 @@ def main():
         for film, scores in films.iteritems()
         if len(scores) >= MIN_FILM_REVIEWS and film not in FILMS
     ]
+    sorted_films = [(f, score) for f, score in sorted_films if score >= MIN_FILM_SCORE]
     sorted_films.sort(key=lambda x: -x[1])
     for film, score in sorted_films:
         print '%s, %.1f' % (film, score)

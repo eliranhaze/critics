@@ -68,20 +68,30 @@ class Critic(object):
 
     def get_all_reviews(self, fetcher):
         if self.url:
-            # get first 100 only
+            reviews = {}
             url = '%s&num_items=100&sort_options=critic_score' % self.url
-            soup = BeautifulSoup(fetcher(url))
-            reviews = soup.findAll('li', {'class': lambda x: 'review critic_review' in x})
-            print 'extracting', len(reviews), soup.find('title').text
-            result = {}
-            for review in reviews:
-                film = urljoin(BASE_URL, review.find('a').get('href'))
-                score_li = review.find('li', {'class': lambda x: 'brief_critscore' in x})
-                score = _get_score(score_li, elem='span')
-                #gen_score = _get_score(review.find('li', {'class': lambda x: 'brief_metascore' in x}), elem='span')
-                result[film] = score
-            return result
-            
+            # first page
+            html = fetcher(url)
+            reviews.update(self.extract_reviews(fetcher(url)))
+            soup = BeautifulSoup(html)
+            # other pages
+            urls = [urljoin(BASE_URL, li.find('a').get('href')) for li in soup.findAll('li', {'class': 'page'})]
+            for url in urls:
+                reviews.update(self.extract_reviews(fetcher(url)))
+            return reviews
+
+    def extract_reviews(self, html):
+        soup = BeautifulSoup(html)
+        reviews = soup.findAll('li', {'class': lambda x: 'review critic_review' in x})
+        print 'extracting', len(reviews), soup.find('title').text
+        result = {}
+        for review in reviews:
+            film = urljoin(BASE_URL, review.find('a').get('href'))
+            score_li = review.find('li', {'class': lambda x: 'brief_critscore' in x})
+            score = _get_score(score_li, elem='span')
+            #gen_score = _get_score(review.find('li', {'class': lambda x: 'brief_metascore' in x}), elem='span')
+            result[film] = score
+        return result
 
     def __str__(self):
         return '%s [%.3f] (%d)' % (self.ident, self.correlation, len(self.reviews))
