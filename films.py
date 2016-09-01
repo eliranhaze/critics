@@ -39,7 +39,9 @@ FILMS = {
     'http://www.metacritic.com/movie/persepolis': 8.5,
     'http://www.metacritic.com/movie/fargo': 8.5,
     'http://www.metacritic.com/movie/pans-labyrinth': 8.5,
+    'http://www.metacritic.com/movie/borat-cultural-learnings-of-america-for-make-benefit-glorious-nation-of-kazakhstan': 8.5,
     'http://www.metacritic.com/movie/brazil': 8.2,
+    'http://www.metacritic.com/movie/her': 8,
     'http://www.metacritic.com/movie/about-elly-2009': 8,
     'http://www.metacritic.com/movie/the-salt-of-the-earth': 8,
     'http://www.metacritic.com/movie/the-tale-of-the-princess-kaguya': 8,
@@ -57,6 +59,8 @@ FILMS = {
     'http://www.metacritic.com/movie/into-the-wild': 8,
     'http://www.metacritic.com/movie/ratatouille': 8,
     'http://www.metacritic.com/movie/a-very-long-engagement': 8,
+    'http://www.metacritic.com/movie/twelve-years-a-slave': 8,
+    'http://www.metacritic.com/movie/wall-e': 8,
     'http://www.metacritic.com/movie/me-and-earl-and-the-dying-girl': 7.8,
     'http://www.metacritic.com/movie/the-end-of-the-tour': 7.5,
 
@@ -71,6 +75,7 @@ FILMS = {
     'http://www.metacritic.com/movie/paris-je-taime': 6,
 
     # not worth it
+    'http://www.metacritic.com/movie/the-sixth-sense': 5,
     'http://www.metacritic.com/movie/sicario': 5,
     'http://www.metacritic.com/movie/the-academy-of-muses': 4,
     'http://www.metacritic.com/movie/the-nice-guys': 2,
