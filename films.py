@@ -56,7 +56,7 @@ FILMS = {
     'http://www.metacritic.com/movie/the-grand-budapest-hotel': 8,
     'http://www.metacritic.com/movie/lincoln': 8,
     'http://www.metacritic.com/movie/the-return-2004': 8,
-    'http://www.metascore.com/movie/inside-llewyn-davis': 8,
+    'http://www.metacritic.com/movie/inside-llewyn-davis': 8,
     'http://www.metacritic.com/movie/into-the-wild': 8,
     'http://www.metacritic.com/movie/ratatouille': 8,
     'http://www.metacritic.com/movie/a-very-long-engagement': 8,
@@ -66,7 +66,7 @@ FILMS = {
 
     # ok
     'http://www.metacritic.com/movie/sweet-bean': 7,
-    'http://www.metascore.com/movie/blue-valentine': 7,  
+    'http://www.metacritic.com/movie/blue-valentine': 7,  
     'http://www.metacritic.com/movie/midnight-in-paris': 7,
     'http://www.metacritic.com/movie/captain-fantastic': 7, 
     'http://www.metacritic.com/movie/mommy': 7,

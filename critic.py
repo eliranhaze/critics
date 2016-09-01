@@ -12,7 +12,7 @@ class Metacritic(object):
 
     def extract_critics(self, html, film):
         soup = BeautifulSoup(html)
-        reviews = soup.findAll('li', {'class': lambda x: 'review critic_review' in x})
+        reviews = soup.findAll('li', {'class': lambda x: x is not None and 'review critic_review' in x})
         print 'extracting', len(reviews), soup.find('title').text
         for review in reviews:
             ident = Critic.ident_from_soup_li(review)
