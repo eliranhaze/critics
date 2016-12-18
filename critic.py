@@ -80,7 +80,6 @@ class Critic(object):
 
     def get_all_reviews(self):
         reviews = {}
-        print 'getting reviews: %s' % (self.ident)
         for soup in self.gen_review_pages():
             reviews.update(self.extract_reviews(soup))
         print 'processed %d reviews: %s' % (len(reviews), self.ident)
