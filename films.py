@@ -37,6 +37,7 @@ FILMS = {
     'the-lord-of-the-rings-the-two-towers': 9,
     'the-lord-of-the-rings-the-return-of-the-king': 9,
     'ray': 9,
+    'eternal-sunshine-of-the-spotless-mind': 9,
 
     # worth watching
     'the-postmans-white-nights': 8.5,
@@ -47,6 +48,7 @@ FILMS = {
     'pans-labyrinth': 8.5,
     '12-years-a-slave': 8.5,
     'borat-cultural-learnings-of-america-for-make-benefit-glorious-nation-of-kazakhstan': 8.5,
+    'capote': 8.5,
     'no-country-for-old-men': 8.5,
     'manchester-by-the-sea': 8.5,
     'graduation': 8.5,
@@ -73,6 +75,7 @@ FILMS = {
     'sand-storm': 8,
     'after-the-storm-2016': 8,
     'spotlight': 8,
+    'gravity': 7.9,
     'me-and-earl-and-the-dying-girl': 7.8,
     'the-end-of-the-tour': 7.5,
 
