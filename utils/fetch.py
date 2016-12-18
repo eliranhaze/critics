@@ -1,3 +1,4 @@
+import random
 import requests
 import time
 import urlparse
@@ -18,7 +19,12 @@ def fetch(url, **kwargs):
         return
     try:
         while True:
-            return session.get(url, **kwargs)
+            response = session.get(url, **kwargs)
+            if int(response.status_code) == 429:
+                print 'got %s, slowing down' % response
+                time.sleep(1 + (random.random() * 3))
+                continue
+            return response
     except requests.exceptions.ConnectionError:
         time.sleep(1)
     except requests.exceptions.TooManyRedirects:
