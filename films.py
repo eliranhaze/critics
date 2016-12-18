@@ -52,6 +52,7 @@ FILMS = {
     'no-country-for-old-men': 8.5,
     'manchester-by-the-sea': 8.5,
     'graduation': 8.5,
+    'brokeback-mountain': 8.5,
     'brazil': 8,
     'her': 8,
     'about-elly-2009': 8,
@@ -72,6 +73,7 @@ FILMS = {
     'ratatouille': 8,
     'a-very-long-engagement': 8,
     'wall-e': 8,
+    'the-social-network': 8,
     'sand-storm': 8,
     'after-the-storm-2016': 8,
     'april-and-the-extraordinary-world': 8,
@@ -81,6 +83,7 @@ FILMS = {
     'the-end-of-the-tour': 7.5,
 
     # ok
+    'avatar': 7,
     'sweet-bean': 7,
     'blue-valentine': 7,  
     'midnight-in-paris': 7,
@@ -89,8 +92,9 @@ FILMS = {
     'django-unchained': 7,
     'zero-dark-thirty': 7,
     'sully': 7,
-    'inside-out-2015': 6.5, 
-    'paris-je-taime': 6,
+    'inside-out-2015': 7, 
+    'paris-je-taime': 6.5,
+    'the-dark-knight': 6.5,
     'the-dark-knight-rises': 6,
 
     # not worth it

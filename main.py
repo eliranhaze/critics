@@ -4,7 +4,7 @@ from critic import Critic, Metacritic
 from films import FILMS, get_film_urls, get_film_name, film_exists
 from utils.fetch import multi_fetch
 
-MIN_CORRELATION = 0.4
+MIN_CORRELATION = 0.5
 MIN_FILM_REVIEWS = 5
 MIN_FILM_SCORE = 8.5
 
