@@ -1,6 +1,10 @@
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup as bs
 from scipy.stats.stats import pearsonr
 from urlparse import urljoin
+
+import re
+
+from utils.fetch import fetch, multi_fetch
 
 BASE_URL = 'http://www.metacritic.com'
 MIN_NUM_FILMS = 7
@@ -11,48 +15,56 @@ class Metacritic(object):
         self.critics = {}
 
     def extract_critics(self, html, film):
-        soup = BeautifulSoup(html)
-        reviews = soup.findAll('li', {'class': lambda x: x is not None and 'review critic_review' in x})
-        print 'extracting', len(reviews), soup.find('title').text
+        soup = bs(minify(html))
+        reviews = findall(soup, 'div', 'class', 'review')
+        num = 0
         for review in reviews:
-            ident = Critic.ident_from_soup_li(review)
-            critic = self.critics.get(ident, None)
-            if not critic:
-                critic = Critic.from_soup_li(film, review)
+            critic = self._parse_critic(review, film)
+            if critic:
+                num += 1
+        print 'processed %d critics for %s' % (num, film)
+
+    def _get_critic(self, name, source):
+        ident = _ident(source, name)
+        return self.critics.get(ident)
+
+    def _parse_critic(self, soup, film):
+        name =_get_author(soup)
+        source = _get_source(soup)
+        critic = self._get_critic(name, source)
+        if critic is None:
+            critic = Critic.from_soup(film, soup, source, name)
+            if critic is not None:
                 self.critics[critic.ident] = critic
-            else:
-                critic.add_review_li(film, review)
+        else:
+            critic.parse_review(film, soup)
+        return critic
 
 class Critic(object):
 
     def __init__(self, source, name, url):
         self.source = source
         self.name = name
+        self.ident = _ident(source, name)
         self.url = url
         self.reviews = {}
         self.correlation = None
 
     @classmethod
-    def from_soup_li(cls, film, li):
-        path = _get_path(li)
+    def from_soup(cls, film, soup, source, name):
+        if not name and not source:
+            return None
+        path = _get_path(soup)
         critic = cls(
-            source = _get_source(li),
-            name = _get_author(li),
+            source = source,
+            name = name,
             url = urljoin(BASE_URL, path) if path else None,
         )
-        critic.add_review(film, _get_score(li))
+        critic.add_review(film, _get_score(soup))
         return critic
 
-    @classmethod
-    def ident_from_soup_li(cls, li):
-        return _ident(_get_source(li), _get_author(li))
-
-    @property
-    def ident(self):
-        return _ident(self.source, self.name)
-
-    def add_review_li(self, film, li):
-        self.add_review(film, _get_score(li))
+    def parse_review(self, film, soup):
+        self.add_review(film, _get_score(soup))
 
     def add_review(self, film, score):
         self.reviews[film] = score
@@ -66,32 +78,44 @@ class Critic(object):
         if len(critic_scores) >= MIN_NUM_FILMS:
             self.correlation = pearsonr(critic_scores, films_scores)[0]
 
-    def get_all_reviews(self, fetcher):
-        if self.url:
-            reviews = {}
-            url = '%s&num_items=100&sort_options=critic_score' % self.url
-            # first page
-            html = fetcher(url)
-            reviews.update(self.extract_reviews(fetcher(url)))
-            soup = BeautifulSoup(html)
-            # other pages
-            urls = [urljoin(BASE_URL, li.find('a').get('href')) for li in soup.findAll('li', {'class': 'page'})]
-            for url in urls:
-                reviews.update(self.extract_reviews(fetcher(url)))
-            return reviews
+    def get_all_reviews(self):
+        reviews = {}
+        print 'getting reviews: %s' % (self.ident)
+        for soup in self.gen_review_pages():
+            reviews.update(self.extract_reviews(soup))
+        print 'processed %d reviews: %s' % (len(reviews), self.ident)
+        return reviews
 
-    def extract_reviews(self, html):
-        soup = BeautifulSoup(html)
-        reviews = soup.findAll('li', {'class': lambda x: 'review critic_review' in x})
-        print 'extracting', len(reviews), soup.find('title').text
+    def gen_review_pages(self):
+        # first page
+        url = '%s&num_items=100&sort_options=critic_score' % self.url
+        first_page = fetch(url).content
+        soup = bs(self._minify(first_page))
+        yield soup
+        # other_page
+        urls = []
+        for elem in findall(soup, 'li', 'class', 'page'):
+            a = elem.find('a')
+            if a:
+                path = a.get('href')
+                urls.append(urljoin(BASE_URL, path))
+        for response in multi_fetch(urls, timeout=180):
+            yield bs(self._minify(response.content))
+
+    def extract_reviews(self, soup):
+        reviews = findall(soup, key='class', value='critic_review')
         result = {}
         for review in reviews:
-            film = urljoin(BASE_URL, review.find('a').get('href'))
-            score_li = review.find('li', {'class': lambda x: 'brief_critscore' in x})
-            score = _get_score(score_li, elem='span')
-            #gen_score = _get_score(review.find('li', {'class': lambda x: 'brief_metascore' in x}), elem='span')
-            result[film] = score
+            film_url = urljoin(BASE_URL, review.find('a').get('href'))
+            score_elem = find(review, key='class', value='brief_critscore')
+            score = _get_score(score_elem)
+            result[film_url] = score
         return result
+
+    def _minify(self, content):
+        content = minify(content)
+        content = re.sub('<div class="review_body">[\s\S]*?</div>', '', content)
+        return content
 
     def __str__(self):
         return '%s [%.3f] (%d)' % (self.ident, self.correlation, len(self.reviews))
@@ -100,19 +124,46 @@ class Critic(object):
 
 # utils
 
-def _get_source(li, elem='div'):
-    return li.find(elem, {'class': 'source'}).text
+def _get_source(soup):
+    e = find(soup, key='class', value='source')
+    if e:
+        return e.text
 
-def _get_author(li):
-    return li.find('div', {'class': 'author'}).text.split(';').pop()
+def _get_author(soup):
+    e = find(soup, key='class', value='author')
+    if e:
+        return e.text.split(';').pop()
 
-def _get_score(li, elem='div'):
-    return float(li.find(elem, {'class': lambda x: 'metascore_w' in x}).text) / 10.
+def _get_score(soup):
+    return float(find(soup, key='class', value='metascore_w').text) / 10.
 
-def _get_path(li):
-    author_li = li.find('li', {'class': lambda x: 'author_reviews' in x})
-    if author_li:
-        return author_li.find('a').get('href')
+def _get_path(soup):
+    e = find(soup, key='class', value='author')
+    if e:
+        return e.find('a').get('href')
 
 def _ident(source, author):
     return '%s/%s' % (source, author)
+
+def findall(soup, name=None, key=None, value=None):
+    found = soup.find_all(name)
+    return [x for x in found if key is None or value in x.get(key, [])]
+
+def find(soup, name=None, key=None, value=None):
+    found = findall(soup, name, key, value)
+    return found[0] if found else None
+
+def minify(content):
+    content = re.sub('<footer[\s\S]*?</footer>', '', content)
+    content = re.sub('<nav[\s\S]*?</nav>', '', content)
+    content = re.sub('<script[\s\S]*?</script>', '', content)
+    content = re.sub('<form[\s\S]*?</form>', '', content)
+    content = re.sub('<style[\s\S]*?</style>', '', content)
+    content = re.sub('<h[1-6][\s\S]*?</h[1-6]>', '', content)
+    content = re.sub('<!--[\s\S]*?-->', '', content)
+    content = re.sub('style=".*?"', ' ', content)
+    content = re.sub('src=".*?"', ' ', content)
+    content = re.sub('target=".*?"', ' ', content)
+    content = ' '.join(content.split())
+    return content
+

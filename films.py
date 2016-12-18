@@ -1,82 +1,125 @@
+from urlparse import urljoin
+
+BASE_URL = 'http://www.metacritic.com/movie/'
+URL_SUFFIX = 'critic-reviews'
 
 # films with my ratings
 FILMS = {
 
      # the best i've seen
-    'http://www.metacritic.com/movie/ida': 10,
-    'http://www.metacritic.com/movie/in-the-mood-for-love': 10,
-    'http://www.metacritic.com/movie/a-separation': 10,
-    'http://www.metacritic.com/movie/leviathan-2014': 10,
-    'http://www.metacritic.com/movie/gett-the-trial-of-viviane-amsalem': 10,
-    'http://www.metacritic.com/movie/rams': 10,
-    'http://www.metacritic.com/movie/winter-sleep': 9.5,
-    'http://www.metacritic.com/movie/once-upon-a-time-in-anatolia': 9.5,
-    'http://www.metacritic.com/movie/there-will-be-blood': 9.5,
-    'http://www.metacritic.com/movie/carol': 9.5,
-    'http://www.metacritic.com/movie/son-of-saul': 9,
-    'http://www.metacritic.com/movie/spring-summer-fall-winter-and-spring': 9,
-    'http://www.metacritic.com/movie/chungking-express': 9,
-    'http://www.metacritic.com/movie/the-pianist': 9,
+    'ida': 10,
+    'in-the-mood-for-love': 10,
+    'a-separation': 10,
+    'leviathan-2014': 10,
+    'gett-the-trial-of-viviane-amsalem': 10,
+    'rams': 10,
+    '4-months-3-weeks-and-2-days': 10,
+    'winter-sleep': 9.5,
+    'once-upon-a-time-in-anatolia': 9.5,
+    'there-will-be-blood': 9.5,
+    'carol': 9.5,
+    'son-of-saul': 9,
+    'spring-summer-fall-winter-and-spring': 9,
+    'chungking-express': 9,
+    'the-pianist': 9,
 
     # kubrick
-    'http://www.metacritic.com/movie/dr-strangelove-or-how-i-learned-to-stop-worrying-and-love-the-bomb': 9,
-    'http://www.metacritic.com/movie/2001-a-space-odyssey': 10,
-    'http://www.metacritic.com/movie/a-clockwork-orange': 9,
-    'http://www.metacritic.com/movie/eyes-wide-shut': 8,
+    'dr-strangelove-or-how-i-learned-to-stop-worrying-and-love-the-bomb': 9,
+    '2001-a-space-odyssey': 10,
+    'a-clockwork-orange': 9,
+    'full-metal-jacket': 8,
+    'eyes-wide-shut': 8,
 
     # personal favorites
-    'http://www.metacritic.com/movie/amelie': 9,
-    'http://www.metacritic.com/movie/american-beauty': 9,
-    'http://www.metacritic.com/movie/the-lord-of-the-rings-the-fellowship-of-the-ring': 9,
-    'http://www.metacritic.com/movie/the-lord-of-the-rings-the-two-towers': 9,
-    'http://www.metacritic.com/movie/the-lord-of-the-rings-the-return-of-the-king': 9,
-    'http://www.metacritic.com/movie/ray': 9,
+    'amelie': 9,
+    'american-beauty': 9,
+    'the-lord-of-the-rings-the-fellowship-of-the-ring': 9,
+    'the-lord-of-the-rings-the-two-towers': 9,
+    'the-lord-of-the-rings-the-return-of-the-king': 9,
+    'ray': 9,
 
     # worth watching
-    'http://www.metacritic.com/movie/the-postmans-white-nights': 8.5,
-    'http://www.metacritic.com/movie/amour': 8.5,
-    'http://www.metacritic.com/movie/the-lives-of-others': 8.5,
-    'http://www.metacritic.com/movie/persepolis': 8.5,
-    'http://www.metacritic.com/movie/fargo': 8.5,
-    'http://www.metacritic.com/movie/pans-labyrinth': 8.5,
-    'http://www.metacritic.com/movie/12-years-a-slave': 8.5,
-    'http://www.metacritic.com/movie/borat-cultural-learnings-of-america-for-make-benefit-glorious-nation-of-kazakhstan': 8.5,
-    'http://www.metacritic.com/movie/brazil': 8.2,
-    'http://www.metacritic.com/movie/her': 8,
-    'http://www.metacritic.com/movie/about-elly-2009': 8,
-    'http://www.metacritic.com/movie/the-salt-of-the-earth': 8,
-    'http://www.metacritic.com/movie/the-tale-of-the-princess-kaguya': 8,
-    'http://www.metacritic.com/movie/victoria': 8,
-    'http://www.metacritic.com/movie/wild-tales': 8,
-    'http://www.metacritic.com/movie/nebraska': 8,
-    'http://www.metacritic.com/movie/anomalisa': 8,
-    'http://www.metacritic.com/movie/magnolia': 8,
-    'http://www.metacritic.com/movie/a-pigeon-sat-on-a-branch-reflecting-on-existence': 8,
-    'http://www.metacritic.com/movie/the-lobster': 8,
-    'http://www.metacritic.com/movie/the-grand-budapest-hotel': 8,
-    'http://www.metacritic.com/movie/lincoln': 8,
-    'http://www.metacritic.com/movie/the-return-2004': 8,
-    'http://www.metacritic.com/movie/inside-llewyn-davis': 8,
-    'http://www.metacritic.com/movie/into-the-wild': 8,
-    'http://www.metacritic.com/movie/ratatouille': 8,
-    'http://www.metacritic.com/movie/a-very-long-engagement': 8,
-    'http://www.metacritic.com/movie/wall-e': 8,
-    'http://www.metacritic.com/movie/me-and-earl-and-the-dying-girl': 7.8,
-    'http://www.metacritic.com/movie/the-end-of-the-tour': 7.5,
+    'the-postmans-white-nights': 8.5,
+    'amour': 8.5,
+    'the-lives-of-others': 8.5,
+    'persepolis': 8.5,
+    'fargo': 8.5,
+    'pans-labyrinth': 8.5,
+    '12-years-a-slave': 8.5,
+    'borat-cultural-learnings-of-america-for-make-benefit-glorious-nation-of-kazakhstan': 8.5,
+    'no-country-for-old-men': 8.5,
+    'manchester-by-the-sea': 8.5,
+    'graduation': 8.5,
+    'brazil': 8.2,
+    'her': 8,
+    'about-elly-2009': 8,
+    'the-salt-of-the-earth': 8,
+    'the-tale-of-the-princess-kaguya': 8,
+    'victoria': 8,
+    'wild-tales': 8,
+    'nebraska': 8,
+    'anomalisa': 8,
+    'magnolia': 8,
+    'a-pigeon-sat-on-a-branch-reflecting-on-existence': 8,
+    'the-lobster': 8,
+    'the-grand-budapest-hotel': 8,
+    'lincoln': 8,
+    'the-return-2004': 8,
+    'inside-llewyn-davis': 8,
+    'into-the-wild': 8,
+    'ratatouille': 8,
+    'a-very-long-engagement': 8,
+    'wall-e': 8,
+    'sand-storm': 8,
+    'after-the-storm-2016': 8,
+    'spotlight': 8,
+    'me-and-earl-and-the-dying-girl': 7.8,
+    'the-end-of-the-tour': 7.5,
 
     # ok
-    'http://www.metacritic.com/movie/sweet-bean': 7,
-    'http://www.metacritic.com/movie/blue-valentine': 7,  
-    'http://www.metacritic.com/movie/midnight-in-paris': 7,
-    'http://www.metacritic.com/movie/captain-fantastic': 7, 
-    'http://www.metacritic.com/movie/mommy': 7,
-    'http://www.metacritic.com/movie/django-unchained': 7,
-    'http://www.metacritic.com/movie/inside-out-2015': 6.5, 
-    'http://www.metacritic.com/movie/paris-je-taime': 6,
+    'sweet-bean': 7,
+    'blue-valentine': 7,  
+    'midnight-in-paris': 7,
+    'captain-fantastic': 7, 
+    'mommy': 7,
+    'django-unchained': 7,
+    'zero-dark-thirty': 7,
+    'sully': 7,
+    'inside-out-2015': 6.5, 
+    'paris-je-taime': 6,
+    'the-dark-knight-rises': 6,
 
     # not worth it
-    'http://www.metacritic.com/movie/the-sixth-sense': 5,
-    'http://www.metacritic.com/movie/sicario': 5,
-    'http://www.metacritic.com/movie/the-academy-of-muses': 4,
-    'http://www.metacritic.com/movie/the-nice-guys': 2,
+    'the-sixth-sense': 5,
+    'sicario': 5,
+    'the-academy-of-muses': 4,
+    'the-hangover': 3,
+    'the-hangover-part-ii': 2,
+    'crazy-stupid-love': 2,
+    'the-nice-guys': 2,
 }
+
+def _add_suffix(url):
+    return '%s/%s' % (url, URL_SUFFIX)
+
+NAME_BY_URL = {
+    _add_suffix(urljoin(BASE_URL, k)): k for k in FILMS.iterkeys()
+}
+URL_BY_NAME = {
+    v: k for k, v in NAME_BY_URL.iteritems()
+}
+
+def get_film_urls():
+    return NAME_BY_URL.keys()
+
+def get_film_name(url):
+    return NAME_BY_URL.get(url)
+
+def film_exists(name=None, url=None):
+    if name:
+        return name in FILMS
+    if url:
+        if not url.endswith(URL_SUFFIX):
+            url = _add_suffix(url)
+        return url in NAME_BY_URL
+    return False
