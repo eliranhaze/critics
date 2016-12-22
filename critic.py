@@ -117,7 +117,7 @@ class Critic(object):
         return content
 
     def __str__(self):
-        return '%s [%.3f] (%d)' % (self.ident, self.correlation, len(self.reviews))
+        return '%s [%.2f] (%d)' % (self.ident, self.correlation, len(self.reviews))
 
     __repr__ = __str__
 

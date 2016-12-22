@@ -78,6 +78,7 @@ FILMS = {
     'after-the-storm-2016': 8,
     'april-and-the-extraordinary-world': 8,
     'spotlight': 8,
+    'beyond-the-hills': 8,
     'gravity': 7.9,
     'me-and-earl-and-the-dying-girl': 7.8,
     'the-end-of-the-tour': 7.5,
@@ -99,11 +100,14 @@ FILMS = {
 
     # not worth it
     'the-sixth-sense': 5,
+    'superman-returns': 5,
     'sicario': 5,
     'the-academy-of-muses': 4,
     'the-hangover': 3,
     'the-hangover-part-ii': 2,
+    'american-wedding': 2,
     'crazy-stupid-love': 2,
+    '2-fast-2-furious': 2,
     'the-nice-guys': 2,
 }
 
