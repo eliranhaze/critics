@@ -1,18 +1,22 @@
+from datetime import timedelta
+
 import argparse
 import requests
 
 from critic import Critic, Metacritic
 from films import FILMS, get_film_urls, get_film_name, film_exists
-from utils.fetch import multi_fetch
+from utils.fetch import Fetcher
 
 # default params
 MIN_CORRELATION = 0.5
 MIN_FILM_REVIEWS = 5
 MIN_FILM_SCORE = 8.5
 
+fetcher = Fetcher(cache=True, cache_ttl=timedelta(days=365), refetch_prob=0.01)
+
 def get_metacritic():
     meta = Metacritic()
-    responses = multi_fetch(get_film_urls(), timeout=180)
+    responses = fetcher.multi_fetch(get_film_urls(), timeout=180)
     for r in responses:
         meta.extract_critics(r.content, get_film_name(r.url))
     return meta
