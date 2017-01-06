@@ -111,11 +111,14 @@ FILMS = {
     'the-nice-guys': 2,
 }
 
+def name_to_url(name):
+    return _add_suffix(urljoin(BASE_URL, name))
+
 def _add_suffix(url):
     return '%s/%s' % (url, URL_SUFFIX)
 
 NAME_BY_URL = {
-    _add_suffix(urljoin(BASE_URL, k)): k for k in FILMS.iterkeys()
+    name_to_url(k): k for k in FILMS.iterkeys()
 }
 URL_BY_NAME = {
     v: k for k, v in NAME_BY_URL.iteritems()

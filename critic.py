@@ -50,7 +50,7 @@ class Critic(object):
         self.url = url
         self.reviews = {}
         self.correlation = None
-        self.fetcher = Fetcher(cache=True, cache_ttl=timedelta(days=60), refetch_prob=0.01, processor=self._minify)
+        self.fetcher = Fetcher(cache=True, cache_ttl=timedelta(days=90), refetch_prob=0.005, processor=self._minify)
 
     @classmethod
     def from_soup(cls, film, soup, source, name):
@@ -118,8 +118,13 @@ class Critic(object):
         content = re.sub('<div class="review_body">[\s\S]*?</div>', '', content)
         return content
 
+    def __eq__(self, other):
+        if type(other) is type(self):
+            return self.ident == other.ident
+        return False
+
     def __str__(self):
-        return '%s [%.2f] (%d)' % (self.ident, self.correlation, len(self.reviews))
+        return '%s [%.2f] (%d)' % (self.ident, self.correlation if self.correlation else 0, len(self.reviews))
 
     __repr__ = __str__
 

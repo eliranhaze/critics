@@ -4,7 +4,7 @@ import argparse
 import requests
 
 from critic import Critic, Metacritic
-from films import FILMS, get_film_urls, get_film_name, film_exists
+from films import FILMS, get_film_urls, get_film_name, film_exists, name_to_url
 from utils.fetch import Fetcher
 
 # default params
@@ -12,7 +12,7 @@ MIN_CORRELATION = 0.5
 MIN_FILM_REVIEWS = 5
 MIN_FILM_SCORE = 8.5
 
-fetcher = Fetcher(cache=True, cache_ttl=timedelta(days=365), refetch_prob=0.01)
+fetcher = Fetcher(cache=True, cache_ttl=timedelta(days=365), refetch_prob=0.005)
 
 def get_metacritic():
     meta = Metacritic()
@@ -55,6 +55,9 @@ def recommend_films(critics, min_reviews, min_score):
     sorted_films.sort(key=lambda x: -x[1])
     return sorted_films
 
+def avg(it):
+    return sum(it)/len(it)
+
 def main():
     # args
     args = get_args()
@@ -62,6 +65,7 @@ def main():
     min_reviews = args.min_reviews if args.min_reviews else MIN_FILM_REVIEWS
     min_score = args.min_score if args.min_score else MIN_FILM_SCORE
     recommend = not args.no_rec
+    film = args.film
     ##########################################
 
     print '### GETTING CRITICS ###'
@@ -70,6 +74,23 @@ def main():
     for critic in filtered_critics:
         print critic
 
+    if film:
+        m = Metacritic()
+        m.extract_critics(fetcher.fetch(name_to_url(film)).content, film)
+        criteria = {
+            'all': lambda c: True,
+            'top': lambda c: c in filtered_critics,
+        }
+        scores = [c.reviews[film] for c in m.critics.itervalues()]
+        scores = {}
+        for critic in m.critics.itervalues():
+            for label, criterion in criteria.iteritems():
+                if criterion(critic):
+                    scores.setdefault(label, []).append(critic.reviews[film])
+        print '### RATINGS FOR %s ###' % film.upper()
+        for label, ratings in scores.iteritems():
+            print '%s: %.1f' % (label, avg(ratings))
+        recommend = False
     if recommend:
         print '### RECOMMENDING FILMS ###'
         films = recommend_films(filtered_critics, min_reviews, min_score)
@@ -83,6 +104,7 @@ def get_args():
     parser.add_argument('--min-rev', dest='min_reviews', type=float)
     parser.add_argument('--min-scr', dest='min_score', type=float)
     parser.add_argument('--no-rec', dest='no_rec', action='store_true')
+    parser.add_argument('--film', dest='film')
     args = parser.parse_args()
     return args
 
