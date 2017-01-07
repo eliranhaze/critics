@@ -58,9 +58,12 @@ class Fetcher(object):
                     continue
                 return response
             except requests.exceptions.ConnectionError, e:
-                print 'got error: %r' % e
+                print 'got error (%d): %r' % (attempt, e)
                 time.sleep(attempt)
             except requests.exceptions.TooManyRedirects:
+                return
+            except Exception, e:
+                print 'unhandled (%d): %r' % (attempt, e)
                 return
 
     def _get_cached(self, url, params=None):
