@@ -6,6 +6,7 @@ note: master version is at words project, until moved to a different repo
 
 from collections import namedtuple
 from datetime import datetime, timedelta
+from threading import RLock
 
 import os
 import random
@@ -22,8 +23,11 @@ requests.packages.urllib3.disable_warnings()
 # utils
 
 def _is_valid_url(url):
-    parse = urlparse.urlparse(url)
-    return parse.scheme and parse.netloc
+    try:
+        parse = urlparse.urlparse(url)
+        return parse.scheme and parse.netloc
+    except:
+        return False
 
 #########################################################
 # main objects
@@ -85,18 +89,19 @@ class Fetcher(object):
             return cached
         response = self._request_until_success(url, **kwargs)
         if response:
+            content = self.processor(response.content) if self.processor else response.content
             if self.cache:
-                content = self.processor(response.content) if self.processor else response.content
                 self.cache.put(content, url, params)
-        else:
-            print 'fetch: got none (url=%s)' % url
-        return response
+            return Response(url=response.url, content=content)
+        print 'fetch: got none (url=%s)' % url
 
     def multi_fetch(self, urls, timeout=120, **kwargs):
         task = lambda url: self.fetch(url, **kwargs)
         return self.executor.execute(task, urls, timeout)
 
 class Cache(object):
+
+    lock = RLock()
 
     cache_dir = '.cache'
     metafile = '%s/%s' % (cache_dir, '.metadata')
@@ -106,29 +111,40 @@ class Cache(object):
         self.cache_ttl = cache_ttl
         self._init_cache_dir()
 
+    #==============================================
+    # internal read-write
+    #==============================================
+
     def _init_cache_dir(self):
-        if not os.path.exists(self.cache_dir):
-            os.makedirs(self.cache_dir)
-        if not os.path.exists(self.metafile):
-            open(self.metafile,'a').close()
+        with self.lock:
+            if not os.path.exists(self.cache_dir):
+                os.makedirs(self.cache_dir)
+            if not os.path.exists(self.metafile):
+                open(self.metafile,'a').close()
 
     def create_entry_path(self, entry):
-        with open(self.metafile, 'a+') as f:
-            lines = f.read().splitlines()
-            name = int(lines[-1].split(self.sep)[-1])+1 if lines else 0
-            f.write('%s%s%s\n' % (entry, self.sep, name))
-            return '%s/%s' % (self.cache_dir, name)
+        with self.lock:
+            with open(self.metafile, 'a+') as f:
+                lines = f.read().splitlines()
+                name = int(lines[-1].split(self.sep)[-1])+1 if lines else 0
+                f.write('%s%s%s\n' % (entry, self.sep, name))
+                return '%s/%s' % (self.cache_dir, name)
 
     def get_entry_path(self, entry, create=False):
         lookfor = '%s%s' % (entry, self.sep)
-        with open(self.metafile) as f:
-            for line in f.read().splitlines():
-                if line.startswith(lookfor):
-                    name = line.split(self.sep)[-1]
-                    return '%s/%s' % (self.cache_dir, name)
-        # not found
-        if create:
-            return self.create_entry_path(entry)
+        with self.lock:
+            with open(self.metafile) as f:
+                for line in f.read().splitlines():
+                    if line.startswith(lookfor):
+                        name = line.split(self.sep)[-1]
+                        return '%s/%s' % (self.cache_dir, name)
+            # not found
+            if create:
+                return self.create_entry_path(entry)
+
+    #==============================================
+    # internal utilities
+    #==============================================
 
     def to_entry(self, url, params=None):
         url = re.sub('[^\w\s-]', '', url)
