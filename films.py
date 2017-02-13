@@ -47,12 +47,14 @@ FILMS = {
     'fargo': 8.5,
     'pans-labyrinth': 8.5,
     '12-years-a-slave': 8.5,
+    'schindlers-list': 8.5,
     'borat-cultural-learnings-of-america-for-make-benefit-glorious-nation-of-kazakhstan': 8.5,
     'capote': 8.5,
     'no-country-for-old-men': 8.5,
     'manchester-by-the-sea': 8.5,
     'graduation': 8.5,
     'brokeback-mountain': 8.5,
+    'crimes-and-misdemeanors': 8,
     'brazil': 8,
     'her': 8,
     'about-elly-2009': 8,
@@ -84,6 +86,7 @@ FILMS = {
     'the-end-of-the-tour': 7.5,
 
     # ok
+    'what-we-do-in-the-shadows': 7,
     'avatar': 7,
     'sweet-bean': 7,
     'blue-valentine': 7,  
