@@ -1,2 +1,2 @@
-- cache pages, regetting them randomly
-- add a script for taking in a film and outputting analysis
+- pickle film ratings for extra speed
+- add more details to film report: slice by correlation and print num critics

@@ -1,10 +1,11 @@
 from bs4 import BeautifulSoup as bs
+from datetime import timedelta
 from scipy.stats.stats import pearsonr
 from urlparse import urljoin
 
 import re
 
-from utils.fetch import fetch, multi_fetch
+from utils.fetch import Fetcher
 
 BASE_URL = 'http://www.metacritic.com'
 MIN_NUM_FILMS = 7
@@ -49,6 +50,7 @@ class Critic(object):
         self.url = url
         self.reviews = {}
         self.correlation = None
+        self.fetcher = Fetcher(cache=True, cache_ttl=timedelta(days=90), refetch_prob=0.005, processor=self._minify)
 
     @classmethod
     def from_soup(cls, film, soup, source, name):
@@ -88,8 +90,8 @@ class Critic(object):
     def gen_review_pages(self):
         # first page
         url = '%s&num_items=100&sort_options=critic_score' % self.url
-        first_page = fetch(url).content
-        soup = bs(self._minify(first_page))
+        first_page = self.fetcher.fetch(url).content
+        soup = bs(first_page)
         yield soup
         # other_page
         urls = []
@@ -98,8 +100,8 @@ class Critic(object):
             if a:
                 path = a.get('href')
                 urls.append(urljoin(BASE_URL, path))
-        for response in multi_fetch(urls, timeout=180):
-            yield bs(self._minify(response.content))
+        for response in self.fetcher.multi_fetch(urls, timeout=180):
+            yield bs(response.content)
 
     def extract_reviews(self, soup):
         reviews = findall(soup, key='class', value='critic_review')
@@ -116,8 +118,13 @@ class Critic(object):
         content = re.sub('<div class="review_body">[\s\S]*?</div>', '', content)
         return content
 
+    def __eq__(self, other):
+        if type(other) is type(self):
+            return self.ident == other.ident
+        return False
+
     def __str__(self):
-        return '%s [%.2f] (%d)' % (self.ident, self.correlation, len(self.reviews))
+        return '%s [%.2f] (%d)' % (self.ident, self.correlation if self.correlation else 0, len(self.reviews))
 
     __repr__ = __str__
 
