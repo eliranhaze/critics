@@ -9,16 +9,16 @@ def minify_feed(content):
     return content
 
 def minify_html(content):
+    content = re.sub('<!--[\s\S]*?-->', '', content)
     content = re.sub('<footer[\s\S]*?</footer>', '', content)
     content = re.sub('<nav[\s\S]*?</nav>', '', content)
-    content = re.sub('<script[\s\S]*?</script>', '', content)
+    content = re.sub('<script[ >][\s\S]*?</script>', '', content)
     content = re.sub('<form[\s\S]*?</form>', '', content)
     content = re.sub('<style[\s\S]*?</style>', '', content)
     content = re.sub('<h[1-6][\s\S]*?</h[1-6]>', '', content)
-    content = re.sub('<!--[\s\S]*?-->', '', content)
     content = re.sub('href=".*?"', ' ', content)
     content = re.sub('style=".*?"', ' ', content)
     content = re.sub('src=".*?"', ' ', content)
-    content = content.replace('  ',' ').replace('\n\n','\n')
+    content = ' '.join(content.split())
     return content
 
