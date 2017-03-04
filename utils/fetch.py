@@ -25,12 +25,27 @@ requests.packages.urllib3.disable_warnings()
 #########################################################
 # utils
 
+CONTENT_TYPES = {
+    'text/html',
+    'text/plain',
+    'text/xml',
+    'xml',
+    'application/json',
+}
+
 def _is_valid_url(url):
     try:
         parse = urlparse.urlparse(url)
         return parse.scheme and parse.netloc
     except:
         return False
+
+def _is_ok_content_type(response):
+    content_type = response.headers.get('Content-Type')
+    if content_type:
+        content_type = content_type.split(';')[0]
+        return content_type in CONTENT_TYPES
+    return False
 
 #########################################################
 # main objects
@@ -53,26 +68,33 @@ class Fetcher(object):
         })
 
     def _request_until_success(self, url, verify=False, **kwargs):
+        max_attempts = 3
         attempt = 0
         while True:
             attempt += 1
+            if attempt > max_attempts:
+                logger.warning('giving up on %s', url)
+                return
             try:
                 logger.debug('request %s attempt=%d', url, attempt)
                 response = self.session.get(url, verify=False, **kwargs)
                 logger.debug('response %s size=%.2fkb elapsed=%.1fms',
                     response.url, len(response._content)/1024., response.elapsed.total_seconds() * 1000.)
+                if not _is_ok_content_type(response):
+                    logger.warning('skipping content type %s', response.url)
+                    return
                 if int(response.status_code) == 429:
                     logger.debug('got %s, slowing down', response)
                     time.sleep(attempt)
                     continue
                 return response
             except requests.exceptions.ConnectionError, e:
-                print 'got error (%d): %r' % (attempt, e)
+                logger.error('got error (%d): %r' % (attempt, e))
                 time.sleep(attempt)
             except requests.exceptions.TooManyRedirects:
                 return
             except Exception, e:
-                print 'unhandled (%d): %r' % (attempt, e)
+                logger.error('unhandled (%d): %r' % (attempt, e))
                 return
 
     def _get_cached(self, url, params=None):
@@ -99,7 +121,7 @@ class Fetcher(object):
             if self.cache:
                 self.cache.put(content, url, params)
             return Response(url=response.url, content=content)
-        print 'fetch: got none (url=%s)' % url
+        logger.warning('fetch: got none (url=%s)' % url)
 
     def multi_fetch(self, urls, timeout=120, **kwargs):
         task = lambda url: self.fetch(url, **kwargs)
