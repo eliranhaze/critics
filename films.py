@@ -40,6 +40,7 @@ FILMS = {
     'eternal-sunshine-of-the-spotless-mind': 9,
 
     # worth watching
+    'sideways': 8.5,
     'gosford-park': 8.5,
     'the-postmans-white-nights': 8.5,
     'amour': 8.5,
