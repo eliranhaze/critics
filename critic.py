@@ -90,18 +90,20 @@ class Critic(object):
     def gen_review_pages(self):
         # first page
         url = '%s&num_items=100&sort_options=critic_score' % self.url
-        first_page = self.fetcher.fetch(url).content
-        soup = bs(first_page)
-        yield soup
-        # other_page
-        urls = []
-        for elem in findall(soup, 'li', 'class', 'page'):
-            a = elem.find('a')
-            if a:
-                path = a.get('href')
-                urls.append(urljoin(BASE_URL, path))
-        for response in self.fetcher.multi_fetch(urls, timeout=180):
-            yield bs(response.content)
+        response = self.fetcher.fetch(url)
+        if response:
+            soup = bs(response.content)
+            yield soup
+            # other_page
+            urls = []
+            for elem in findall(soup, 'li', 'class', 'page'):
+                a = elem.find('a')
+                if a:
+                    path = a.get('href')
+                    urls.append(urljoin(BASE_URL, path))
+            for response in self.fetcher.multi_fetch(urls, timeout=180):
+                if response:
+                    yield bs(response.content)
 
     def extract_reviews(self, soup):
         reviews = findall(soup, key='class', value='critic_review')
