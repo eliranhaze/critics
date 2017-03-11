@@ -102,11 +102,15 @@ FILMS = {
     'paris-je-taime': 6.5,
     'the-dark-knight': 6.5,
     'the-dark-knight-rises': 6,
+    'inglourious-basterds': 6,
+    'inception': 6,
 
     # not worth it
+    'the-hobbit-an-unexpected-journey': 5,
     'the-sixth-sense': 5,
     'superman-returns': 5,
     'sicario': 5,
+    'rocknrolla': 4,
     'the-academy-of-muses': 4,
     'the-hangover': 3,
     'the-hangover-part-ii': 2,
@@ -114,6 +118,7 @@ FILMS = {
     'crazy-stupid-love': 2,
     '2-fast-2-furious': 2,
     'the-nice-guys': 2,
+    'ghost-rider': 1,
 }
 
 def name_to_url(name):
