@@ -88,6 +88,9 @@ FILMS = {
     'the-end-of-the-tour': 7.5,
 
     # ok
+    'birdman-or-the-unexpected-virtue-of-ignorance': 7,
+    'up': 7,
+    'children-of-men': 7,
     'what-we-do-in-the-shadows': 7,
     'avatar': 7,
     'sweet-bean': 7,
@@ -99,9 +102,11 @@ FILMS = {
     'zero-dark-thirty': 7,
     'sully': 7,
     'inside-out-2015': 7, 
+    'waking-life': 6.5,
     'paris-je-taime': 6.5,
     'the-dark-knight': 6.5,
     'the-dark-knight-rises': 6,
+    'batman-begins': 6,
     'inglourious-basterds': 6,
     'inception': 6,
 
@@ -112,12 +117,16 @@ FILMS = {
     'sicario': 5,
     'rocknrolla': 4,
     'the-academy-of-muses': 4,
-    'the-hangover': 3,
+    'the-hangover': 2,
     'the-hangover-part-ii': 2,
     'american-wedding': 2,
     'crazy-stupid-love': 2,
     '2-fast-2-furious': 2,
     'the-nice-guys': 2,
+    'the-dukes-of-hazzard': 2,
+    'gone-in-sixty-seconds': 2,
+    'anaconda': 2,
+    'the-wedding-planner': 2,
     'ghost-rider': 1,
 }
 

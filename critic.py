@@ -8,7 +8,10 @@ import re
 from utils.fetch import Fetcher
 
 BASE_URL = 'http://www.metacritic.com'
-MIN_NUM_FILMS = 7
+MIN_NUM_FILMS = 8
+MIN_SCORE_AVG = 3
+MAX_SCORE_AVG = 9
+MIN_SCORES_RANGE = 4
 
 class Metacritic(object):
 
@@ -23,7 +26,7 @@ class Metacritic(object):
             critic = self._parse_critic(review, film)
             if critic:
                 num += 1
-        print 'processed %d critics for %s' % (num, film)
+        #print 'processed %d critics for %s' % (num, film)
 
     def _get_critic(self, name, source):
         ident = _ident(source, name)
@@ -78,7 +81,13 @@ class Critic(object):
             critic_scores.append(score)
             films_scores.append(films[film])
         if len(critic_scores) >= MIN_NUM_FILMS:
-            self.correlation = pearsonr(critic_scores, films_scores)[0]
+            scores_avg = sum(critic_scores)/len(critic_scores)
+            scores_rng = max(critic_scores)-min(critic_scores)
+            if MIN_SCORE_AVG <= scores_avg <= MAX_SCORE_AVG and scores_rng >= MIN_SCORES_RANGE:
+                self.correlation = pearsonr(critic_scores, films_scores)[0]
+            else:
+                pass # TODO: use logger
+                #print 'filtered out: %s avg %.1f rng %.1f num %d' % (self, scores_avg, scores_rng, len(critic_scores))
 
     def get_all_reviews(self):
         reviews = {}
