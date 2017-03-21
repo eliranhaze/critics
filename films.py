@@ -7,6 +7,7 @@ URL_SUFFIX = 'critic-reviews'
 FILMS = {
 
      # the best i've seen
+    'the-salesman': 10,
     'ida': 10,
     'in-the-mood-for-love': 10,
     'a-separation': 10,
