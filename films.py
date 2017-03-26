@@ -85,9 +85,10 @@ FILMS = {
     'april-and-the-extraordinary-world': 8,
     'spotlight': 8,
     'beyond-the-hills': 8,
-    'gravity': 7.9,
-    'me-and-earl-and-the-dying-girl': 7.8,
+    'gravity': 7.5,
+    'me-and-earl-and-the-dying-girl': 7.5,
     'the-end-of-the-tour': 7.5,
+    '45-years': 7.5,
 
     # ok
     'birdman-or-the-unexpected-virtue-of-ignorance': 7,
