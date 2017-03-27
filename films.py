@@ -89,6 +89,7 @@ FILMS = {
     'me-and-earl-and-the-dying-girl': 7.5,
     'the-end-of-the-tour': 7.5,
     '45-years': 7.5,
+    'blue-valentine': 7.5,  
 
     # ok
     'birdman-or-the-unexpected-virtue-of-ignorance': 7,
@@ -97,14 +98,13 @@ FILMS = {
     'what-we-do-in-the-shadows': 7,
     'avatar': 7,
     'sweet-bean': 7,
-    'blue-valentine': 7,  
     'midnight-in-paris': 7,
     'captain-fantastic': 7, 
     'mommy': 7,
     'django-unchained': 7,
     'zero-dark-thirty': 7,
-    'sully': 7,
     'inside-out-2015': 7, 
+    'sully': 6.5,
     'waking-life': 6.5,
     'paris-je-taime': 6.5,
     'the-dark-knight': 6.5,
