@@ -41,6 +41,7 @@ FILMS = {
     'eternal-sunshine-of-the-spotless-mind': 9,
 
     # worth watching
+    'the-master': 8.5,
     'brooklyn': 8.5,
     'sideways': 8.5,
     'gosford-park': 8.5,
