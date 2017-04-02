@@ -1,4 +1,5 @@
 from urlparse import urljoin
+import re
 
 BASE_URL = 'http://www.metacritic.com/movie/'
 URL_SUFFIX = 'critic-reviews'
@@ -137,6 +138,9 @@ FILMS = {
 
 def name_to_url(name):
     return _add_suffix(urljoin(BASE_URL, name))
+
+def url_to_name(url):
+    return re.findall('%s(\S+)/%s' % (BASE_URL, URL_SUFFIX), url.lower())[0]
 
 def _add_suffix(url):
     return '%s/%s' % (url, URL_SUFFIX)

@@ -4,7 +4,7 @@ import argparse
 import requests
 
 from critic import Critic, Metacritic
-from films import FILMS, get_film_urls, get_film_name, film_exists, name_to_url
+from films import FILMS, get_film_urls, get_film_name, film_exists, name_to_url, url_to_name
 from utils.fetch import Fetcher
 
 # default params
@@ -55,6 +55,35 @@ def recommend_films(critics, min_reviews, min_score):
     sorted_films.sort(key=lambda x: -x[1])
     return sorted_films
 
+def films_ratings(film_urls, filtered_critics):
+    m = Metacritic()
+    responses = fetcher.multi_fetch(film_urls, timeout=180)
+    for r in responses:
+        film = r.url
+        m.extract_critics(r.content, film)
+        criteria = {
+            'top': lambda c: c in filtered_critics,
+        }
+        scores = []
+        for critic in m.critics.itervalues():
+            if film not in critic.reviews:
+                continue
+            if critic in filtered_critics:
+                scores.append(critic.reviews[film])
+        if scores:
+            print '%s: %.1f' % (url_to_name(film), avg(scores))
+
+def test_films():
+    min_corr = MIN_CORRELATION
+    print '### GETTING CRITICS ###'
+    all_critics, filtered_critics = get_critics(min_corr)
+    print '### TOP CRITICS (%d out of %d) ###' % (len(filtered_critics), len(all_critics))
+    for critic in filtered_critics:
+        print critic
+    m = Metacritic()
+    films = m.get_films(range(2013, 2018), 70)
+    films_ratings(films, filtered_critics)
+
 def avg(it):
     return sum(it)/len(it)
 
@@ -81,7 +110,6 @@ def main():
             'all': lambda c: True,
             'top': lambda c: c in filtered_critics,
         }
-        scores = [c.reviews[film] for c in m.critics.itervalues()]
         scores = {}
         for critic in m.critics.itervalues():
             for label, criterion in criteria.iteritems():

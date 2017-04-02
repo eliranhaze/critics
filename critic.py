@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup as bs
-from datetime import timedelta
+from datetime import datetime, timedelta
 from scipy.stats.stats import pearsonr
 from urlparse import urljoin
 
@@ -27,6 +27,34 @@ class Metacritic(object):
             if critic:
                 num += 1
         #print 'processed %d critics for %s' % (num, film)
+
+    def get_films(self, years, min_score):
+        films = []
+        cur_year = datetime.now().year
+        for year in years:
+            cache_ttl = timedelta(days = (cur_year - year + 1) * 10)
+            fetcher = Fetcher(cache=True, cache_ttl=cache_ttl, processor=minify)
+            url = urljoin(BASE_URL, '/browse/movies/score/metascore/year/filtered?year_selected=%d&sort=desc' % year)
+            html = fetcher.fetch(url).content
+            films.extend(self.extract_films(html, min_score))
+        return films
+
+    def extract_films(self, html, min_score):
+        films = []
+        soup = bs(html)
+        links = findall(soup, 'a', 'class', 'metascore_anchor')
+        for link in links:
+            film = urljoin(BASE_URL, link.get('href'))
+            score_div = find(link, 'div', 'class', 'metascore_w')
+            if score_div:
+                score = int(score_div.text)
+                if score >= min_score:
+                    films.append(film)
+                else:
+                    break
+            else:
+                print '%s has no score' % film
+        return films
 
     def _get_critic(self, name, source):
         ident = _ident(source, name)
