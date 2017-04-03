@@ -8,7 +8,7 @@ from films import FILMS, get_film_urls, get_film_name, film_exists, name_to_url,
 from utils.fetch import Fetcher
 
 # default params
-MIN_CORRELATION = 0.5
+MIN_CORRELATION = 0.65
 MIN_FILM_REVIEWS = 5
 MIN_FILM_SCORE = 8.5
 
@@ -87,6 +87,9 @@ def test_films():
 def avg(it):
     return sum(it)/len(it)
 
+def wavg(w, x):
+    return 1.*sum(wi*xi for wi,xi in zip(w,x))/sum(w)
+
 def main():
     # args
     args = get_args()
@@ -103,21 +106,36 @@ def main():
     for critic in filtered_critics:
         print critic
 
+    critic_corrs = {c: c.correlation for c in all_critics}
     if film:
         m = Metacritic()
         m.extract_critics(fetcher.fetch(name_to_url(film)).content, film)
         criteria = {
             'all': lambda c: True,
             'top': lambda c: c in filtered_critics,
+            '>0.50': lambda c: critic_corrs.get(c, 0) > 0.5,
+            '>0.60': lambda c: critic_corrs.get(c, 0) > 0.6,
+            '>0.65': lambda c: critic_corrs.get(c, 0) > 0.65,
+            '>0.70': lambda c: critic_corrs.get(c, 0) > 0.70,
+            '>0.75': lambda c: critic_corrs.get(c, 0) > 0.75,
         }
         scores = {}
+        wscores = {}
         for critic in m.critics.itervalues():
             for label, criterion in criteria.iteritems():
                 if criterion(critic):
                     scores.setdefault(label, []).append(critic.reviews[film])
+                    critic_corr = critic_corrs.get(critic)
+                    if critic_corr:
+                        wscores.setdefault(label, []).append((critic_corr, critic.reviews[film]))
         print '### RATINGS FOR %s ###' % film.upper()
-        for label, ratings in scores.iteritems():
-            print '%s: %.1f' % (label, avg(ratings))
+        for label, ratings in sorted(scores.iteritems()):
+            if label in ('all', 'top'):
+                print '%s: %.2f (%d)' % (label, avg(ratings), len(ratings))
+        for label, wratings in sorted(wscores.iteritems()):
+            if label not in ('all', 'top'):
+                weights, ratings = zip(*wratings)
+                print '%s-w: %.2f (%d)' % (label, wavg(weights, ratings), len(ratings))
         recommend = False
     if recommend:
         print '### RECOMMENDING FILMS ###'

@@ -162,6 +162,9 @@ class Critic(object):
             return self.ident == other.ident
         return False
 
+    def __hash__(self):
+        return hash(self.ident)
+
     def __str__(self):
         return '%s [%.2f] (%d)' % (self.ident, self.correlation if self.correlation else 0, len(self.reviews))
 
