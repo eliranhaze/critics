@@ -4,7 +4,7 @@ import argparse
 import requests
 
 from critic import Critic, Metacritic
-from films import FILMS, get_film_urls, get_film_name, film_exists, name_to_url, url_to_name
+from films import FILMS, get_film_name, film_exists, name_to_url, url_to_name
 from utils.fetch import Fetcher
 
 # default params
@@ -14,13 +14,6 @@ MIN_FILM_SCORE = 8.5
 
 fetcher = Fetcher(cache=True, cache_ttl=timedelta(days=365), refetch_prob=0.005)
 
-def get_metacritic():
-    meta = Metacritic()
-    responses = fetcher.multi_fetch(get_film_urls(), timeout=180)
-    for r in responses:
-        meta.extract_critics(r.content, get_film_name(r.url))
-    return meta
-
 def correlate(critics):
     correlated = []
     for critic in critics:
@@ -29,8 +22,8 @@ def correlate(critics):
     return correlated
 
 def get_critics(min_corr):
-    metacritic = get_metacritic()
-    critics = correlate(metacritic.critics.itervalues())
+    uncorr_critics = Metacritic().get_critics()
+    critics = correlate(uncorr_critics.itervalues())
     filtered_critics = [c for c in critics if c.correlation >= min_corr] 
     filtered_critics.sort(key=lambda c: -c.correlation)
     return critics, filtered_critics

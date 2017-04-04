@@ -1,11 +1,17 @@
+import cPickle as pkl
+import os
+import re
+
 from bs4 import BeautifulSoup as bs
 from datetime import datetime, timedelta
 from scipy.stats.stats import pearsonr
 from urlparse import urljoin
 
-import re
-
 from utils.fetch import Fetcher
+from films import FILMS, get_film_urls, get_film_name
+
+from utils.logger import get_logger
+logger = get_logger('critics')
 
 BASE_URL = 'http://www.metacritic.com'
 MIN_NUM_FILMS = 8
@@ -13,10 +19,51 @@ MIN_SCORE_AVG = 3
 MAX_SCORE_AVG = 9
 MIN_SCORES_RANGE = 4
 
+class Cache(object):
+
+    PKL = '.critics.pkl'
+    PKL_FILMS = '.films.pkl'
+    data = None
+
+    @classmethod
+    def get(cls):
+        if cls.data is None:
+            cls.load()
+        return cls.data
+
+    @classmethod
+    def load(cls):
+        logger.debug('loading data')
+        if os.path.exists(cls.PKL) and os.path.exists(cls.PKL_FILMS):
+            last_films = pkl.load(open(cls.PKL_FILMS, 'rb'))
+            if last_films == FILMS:
+                data = pkl.load(open(cls.PKL, 'rb'))
+                logger.debug('data unchanged')
+                cls.data = data
+
+    @classmethod
+    def save(cls, data):
+        logger.debug('creating a new data')
+        pkl.dump(data, open(cls.PKL, 'wb'))
+        pkl.dump(FILMS, open(cls.PKL_FILMS, 'wb'))
+        logger.debug('new data created')
+        cls.data = data
+
 class Metacritic(object):
 
     def __init__(self):
         self.critics = {}
+
+    def get_critics(self):
+	cache = Cache.get()
+	if cache:
+	    return cache
+        fetcher = Fetcher(cache=True, cache_ttl=timedelta(days=365), refetch_prob=0.005)
+        responses = fetcher.multi_fetch(get_film_urls(), timeout=180)
+        for r in responses:
+            self.extract_critics(r.content, get_film_name(r.url))
+	Cache.save(self.critics)
+        return self.critics
 
     def extract_critics(self, html, film):
         soup = bs(minify(html))
@@ -26,7 +73,7 @@ class Metacritic(object):
             critic = self._parse_critic(review, film)
             if critic:
                 num += 1
-        #print 'processed %d critics for %s' % (num, film)
+        logger.debug('processed %d critics for %s' % (num, film))
 
     def get_films(self, years, min_score):
         films = []
@@ -53,7 +100,7 @@ class Metacritic(object):
                 else:
                     break
             else:
-                print '%s has no score' % film
+                logger.warning('%s has no score' % film)
         return films
 
     def _get_critic(self, name, source):
@@ -72,7 +119,14 @@ class Metacritic(object):
             critic.parse_review(film, soup)
         return critic
 
+def critic_minify(self, content):
+    content = minify(content)
+    content = re.sub('<div class="review_body">[\s\S]*?</div>', '', content)
+    return content
+
 class Critic(object):
+
+    fetcher = Fetcher(cache=True, cache_ttl=timedelta(days=90), processor=critic_minify)
 
     def __init__(self, source, name, url):
         self.source = source
@@ -81,7 +135,6 @@ class Critic(object):
         self.url = url
         self.reviews = {}
         self.correlation = None
-        self.fetcher = Fetcher(cache=True, cache_ttl=timedelta(days=90), refetch_prob=0.005, processor=self._minify)
 
     @classmethod
     def from_soup(cls, film, soup, source, name):
@@ -114,14 +167,13 @@ class Critic(object):
             if MIN_SCORE_AVG <= scores_avg <= MAX_SCORE_AVG and scores_rng >= MIN_SCORES_RANGE:
                 self.correlation = pearsonr(critic_scores, films_scores)[0]
             else:
-                pass # TODO: use logger
-                #print 'filtered out: %s avg %.1f rng %.1f num %d' % (self, scores_avg, scores_rng, len(critic_scores))
+                logger.info('filtered out: %s avg %.1f rng %.1f num %d' % (self, scores_avg, scores_rng, len(critic_scores)))
 
     def get_all_reviews(self):
         reviews = {}
         for soup in self.gen_review_pages():
             reviews.update(self.extract_reviews(soup))
-        print 'processed %d reviews: %s' % (len(reviews), self.ident)
+        logger('processed %d reviews: %s' % (len(reviews), self.ident))
         return reviews
 
     def gen_review_pages(self):
@@ -151,11 +203,6 @@ class Critic(object):
             score = _get_score(score_elem)
             result[film_url] = score
         return result
-
-    def _minify(self, content):
-        content = minify(content)
-        content = re.sub('<div class="review_body">[\s\S]*?</div>', '', content)
-        return content
 
     def __eq__(self, other):
         if type(other) is type(self):
