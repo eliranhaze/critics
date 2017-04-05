@@ -96,6 +96,7 @@ FILMS = {
     'blue-valentine': 7.5,  
 
     # ok
+    'inherent-vice': 7,
     'birdman-or-the-unexpected-virtue-of-ignorance': 7,
     'up': 7,
     'children-of-men': 7,
