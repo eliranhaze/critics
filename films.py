@@ -42,6 +42,7 @@ FILMS = {
     'eternal-sunshine-of-the-spotless-mind': 9,
 
     # worth watching
+    'paterson': 8.5,
     'lost-in-translation': 8.5,
     'the-master': 8.5,
     'brooklyn': 8.5,
