@@ -24,6 +24,7 @@ FILMS = {
     'spring-summer-fall-winter-and-spring': 9,
     'chungking-express': 9,
     'the-pianist': 9,
+    'pans-labyrinth': 9,
 
     # kubrick
     'dr-strangelove-or-how-i-learned-to-stop-worrying-and-love-the-bomb': 9,
@@ -53,7 +54,6 @@ FILMS = {
     'the-lives-of-others': 8.5,
     'persepolis': 8.5,
     'fargo': 8.5,
-    'pans-labyrinth': 8.5,
     '12-years-a-slave': 8.5,
     'schindlers-list': 8.5,
     'borat-cultural-learnings-of-america-for-make-benefit-glorious-nation-of-kazakhstan': 8.5,
