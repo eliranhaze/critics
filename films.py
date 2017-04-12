@@ -20,11 +20,14 @@ FILMS = {
     'once-upon-a-time-in-anatolia': 9.5,
     'there-will-be-blood': 9.5,
     'carol': 9.5,
+
+    # very good
     'son-of-saul': 9,
     'spring-summer-fall-winter-and-spring': 9,
     'chungking-express': 9,
     'the-pianist': 9,
     'pans-labyrinth': 9,
+    'toni-erdmann': 9,
 
     # kubrick
     'dr-strangelove-or-how-i-learned-to-stop-worrying-and-love-the-bomb': 9,
