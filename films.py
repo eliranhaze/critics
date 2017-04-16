@@ -43,7 +43,6 @@ FILMS = {
     'the-lord-of-the-rings-the-two-towers': 9,
     'the-lord-of-the-rings-the-return-of-the-king': 9,
     'ray': 9,
-    'eternal-sunshine-of-the-spotless-mind': 9,
 
     # worth watching
     'paterson': 8.5,
@@ -67,6 +66,7 @@ FILMS = {
     'brokeback-mountain': 8.5,
     'the-salt-of-the-earth': 8.5,
     'crimes-and-misdemeanors': 8,
+    'eternal-sunshine-of-the-spotless-mind': 8,
     'brazil': 8,
     'her': 8,
     'about-elly-2009': 8,
