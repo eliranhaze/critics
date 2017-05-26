@@ -20,6 +20,7 @@ FILMS = {
     'once-upon-a-time-in-anatolia': 9.5,
     'there-will-be-blood': 9.5,
     'carol': 9.5,
+    'moonlight-2016': 9.5,
 
     # very good
     'son-of-saul': 9,
