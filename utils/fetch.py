@@ -32,6 +32,7 @@ CONTENT_TYPES = {
     'xml',
     'application/rss+xml',
     'application/json',
+    'application/xml',
 }
 
 def _is_valid_url(url):
