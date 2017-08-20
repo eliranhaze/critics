@@ -22,6 +22,8 @@ logger = get_logger('fetch')
 
 requests.packages.urllib3.disable_warnings()
 
+DEFAULT_TIMEOUT = 10 # seconds
+
 #########################################################
 # utils
 
@@ -32,6 +34,7 @@ CONTENT_TYPES = {
     'xml',
     'application/rss+xml',
     'application/json',
+    'application/xml',
 }
 
 def _is_valid_url(url):
@@ -78,6 +81,7 @@ class Fetcher(object):
                 return
             try:
                 logger.debug('request %s attempt=%d', url, attempt)
+                kwargs.setdefault('timeout', DEFAULT_TIMEOUT)
                 response = self.session.get(url, verify=False, **kwargs)
                 logger.debug('response %s size=%.2fkb elapsed=%.1fms',
                     response.url, len(response._content)/1024., response.elapsed.total_seconds() * 1000.)
