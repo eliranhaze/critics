@@ -94,6 +94,7 @@ FILMS = {
     'spotlight': 8,
     'beyond-the-hills': 8,
     'dheepan': 8,
+    'embrace-of-the-serpent': 8,
     'gravity': 7.5,
     'me-and-earl-and-the-dying-girl': 7.5,
     'the-end-of-the-tour': 7.5,
