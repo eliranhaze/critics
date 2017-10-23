@@ -16,8 +16,8 @@ logger = get_logger('critics')
 BASE_URL = 'http://www.metacritic.com'
 MIN_NUM_FILMS = 8
 MIN_SCORE_AVG = 3
-MAX_SCORE_AVG = 9
-MIN_SCORES_RANGE = 4
+MAX_SCORE_AVG = 9.5
+MIN_SCORES_RANGE = 2
 
 class Cache(object):
 
