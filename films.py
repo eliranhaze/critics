@@ -13,6 +13,7 @@ FILMS = {
     'in-the-mood-for-love': 10,
     'a-separation': 10,
     'leviathan-2014': 10,
+    'loveless-2017': 10,
     'gett-the-trial-of-viviane-amsalem': 10,
     'rams': 10,
     '4-months-3-weeks-and-2-days': 10,
