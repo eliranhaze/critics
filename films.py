@@ -126,7 +126,7 @@ FILMS = {
     'inception': 6,
 
     # not worth it
-    'gangs-of-new-york' 5,
+    'gangs-of-new-york': 5,
     'the-hobbit-an-unexpected-journey': 5,
     'the-sixth-sense': 5,
     'superman-returns': 5,
