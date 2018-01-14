@@ -30,6 +30,7 @@ FILMS = {
     'the-pianist': 9,
     'pans-labyrinth': 9,
     'toni-erdmann': 9,
+    'on-body-and-soul': 9,
 
     # kubrick
     'dr-strangelove-or-how-i-learned-to-stop-worrying-and-love-the-bomb': 9,
