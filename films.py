@@ -47,6 +47,9 @@ FILMS = {
     'the-lord-of-the-rings-the-return-of-the-king': 9,
     'ray': 9,
 
+    # documentaries
+    'the-central-park-five': 9.5,
+
     # worth watching
     'paterson': 8.5,
     'lost-in-translation': 8.5,
