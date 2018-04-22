@@ -22,15 +22,18 @@ FILMS = {
     'there-will-be-blood': 9.5,
     'carol': 9.5,
     'moonlight-2016': 9.5,
+    'chungking-express': 9.5,
 
     # very good
     'son-of-saul': 9,
     'spring-summer-fall-winter-and-spring': 9,
-    'chungking-express': 9,
     'the-pianist': 9,
     'pans-labyrinth': 9,
     'toni-erdmann': 9,
+    'a-fantastic-woman': 9,
     'on-body-and-soul': 9,
+    'phantom-thread': 9,
+    'the-square-2017': 9,
 
     # kubrick
     'dr-strangelove-or-how-i-learned-to-stop-worrying-and-love-the-bomb': 9,
@@ -38,6 +41,11 @@ FILMS = {
     'a-clockwork-orange': 9,
     'full-metal-jacket': 8,
     'eyes-wide-shut': 8,
+
+    # woody
+    'annie-hall-1977': 9.5,
+    'hannah-and-her-sisters': 9,
+    'crimes-and-misdemeanors': 8.5,
 
     # personal favorites
     'amelie': 9,
@@ -48,9 +56,13 @@ FILMS = {
     'ray': 9,
 
     # documentaries
+    'tempestad': 10,
+    'the-thin-blue-line': 8,
+    'the-fog-of-war-eleven-lessons-from-the-life-of-robert-s-mcnamara': 8.5,
     'the-central-park-five': 9.5,
 
     # worth watching
+    'days-of-being-wild-re-release': 8.5,
     'paterson': 8.5,
     'lost-in-translation': 8.5,
     'the-master': 8.5,
@@ -71,7 +83,7 @@ FILMS = {
     'graduation': 8.5,
     'brokeback-mountain': 8.5,
     'the-salt-of-the-earth': 8.5,
-    'crimes-and-misdemeanors': 8,
+    'the-other-side-of-hope': 8.5,
     'eternal-sunshine-of-the-spotless-mind': 8,
     'brazil': 8,
     'her': 8,
@@ -100,11 +112,14 @@ FILMS = {
     'beyond-the-hills': 8,
     'dheepan': 8,
     'embrace-of-the-serpent': 8,
+    'the-shape-of-water': 8,
     'gravity': 7.5,
     'me-and-earl-and-the-dying-girl': 7.5,
     'the-end-of-the-tour': 7.5,
     '45-years': 7.5,
-    'blue-valentine': 7.5,  
+    'blue-valentine': 7.5,
+    'happy-end': 7.5,
+    'three-billboards-outside-ebbing-missouri': 7.5,
 
     # ok
     'inherent-vice': 7,
