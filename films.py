@@ -44,6 +44,7 @@ FILMS = {
 
     # woody
     'annie-hall-1977': 9.5,
+    'manhattan': 9,
     'hannah-and-her-sisters': 9,
     'crimes-and-misdemeanors': 8.5,
 
