@@ -10,7 +10,6 @@ FILMS = {
      # the best i've seen
     'the-salesman': 10,
     'ida': 10,
-    'in-the-mood-for-love': 10,
     'a-separation': 10,
     'leviathan-2014': 10,
     'loveless-2017': 10,
@@ -22,7 +21,6 @@ FILMS = {
     'there-will-be-blood': 9.5,
     'carol': 9.5,
     'moonlight-2016': 9.5,
-    'chungking-express': 9.5,
 
     # very good
     'son-of-saul': 9,
@@ -48,6 +46,12 @@ FILMS = {
     'hannah-and-her-sisters': 9,
     'crimes-and-misdemeanors': 8.5,
 
+    # kar-wai
+    'days-of-being-wild-re-release': 8.5,
+    'chungking-express': 9.5,
+    'fallen-angels': 9,
+    'in-the-mood-for-love': 10,
+
     # personal favorites
     'amelie': 9,
     'american-beauty': 9,
@@ -63,7 +67,6 @@ FILMS = {
     'the-central-park-five': 9.5,
 
     # worth watching
-    'days-of-being-wild-re-release': 8.5,
     'paterson': 8.5,
     'lost-in-translation': 8.5,
     'the-master': 8.5,
