@@ -147,6 +147,7 @@ FILMS = {
     'batman-begins': 6,
     'inglourious-basterds': 6,
     'inception': 6,
+    'last-flag-flying': 6,
 
     # not worth it
     'gangs-of-new-york': 5,
