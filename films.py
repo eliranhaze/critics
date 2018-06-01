@@ -67,6 +67,7 @@ FILMS = {
     'the-central-park-five': 9.5,
 
     # worth watching
+    'the-white-ribbon': 8.5,
     'paterson': 8.5,
     'lost-in-translation': 8.5,
     'the-master': 8.5,
