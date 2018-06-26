@@ -81,6 +81,7 @@ def avg(it):
     return sum(it)/len(it)
 
 def wavg(w, x):
+    w = [wi**3 for wi in w] # amplify weights
     return 1.*sum(wi*xi for wi,xi in zip(w,x))/sum(w)
 
 def main():
