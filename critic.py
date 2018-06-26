@@ -119,7 +119,7 @@ class Metacritic(object):
             critic.parse_review(film, soup)
         return critic
 
-def critic_minify(self, content):
+def critic_minify(content):
     content = minify(content)
     content = re.sub('<div class="review_body">[\s\S]*?</div>', '', content)
     return content
@@ -173,7 +173,7 @@ class Critic(object):
         reviews = {}
         for soup in self.gen_review_pages():
             reviews.update(self.extract_reviews(soup))
-        logger('processed %d reviews: %s' % (len(reviews), self.ident))
+        logger.info('processed %d reviews: %s' % (len(reviews), self.ident))
         return reviews
 
     def gen_review_pages(self):
