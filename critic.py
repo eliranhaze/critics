@@ -235,7 +235,9 @@ def _get_score(soup):
 def _get_path(soup):
     e = find(soup, key='class', value='author')
     if e:
-        return e.find('a').get('href')
+        a = e.find('a')
+        if a:
+            return a.get('href')
 
 def _ident(source, author):
     return '%s/%s' % (source, author)
