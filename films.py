@@ -127,6 +127,7 @@ FILMS = {
     'three-billboards-outside-ebbing-missouri': 7.5,
 
     # ok
+    'boyhood': 7,
     'inherent-vice': 7,
     'birdman-or-the-unexpected-virtue-of-ignorance': 7,
     'up': 7,
