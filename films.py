@@ -7,7 +7,8 @@ URL_SUFFIX = 'critic-reviews'
 # films with my ratings
 FILMS = {
 
-     # the best i've seen
+    # the best i've seen
+    'the-wild-pear-tree': 10,
     'the-salesman': 10,
     'ida': 10,
     'a-separation': 10,
@@ -125,6 +126,7 @@ FILMS = {
     'blue-valentine': 7.5,
     'happy-end': 7.5,
     'three-billboards-outside-ebbing-missouri': 7.5,
+    'dogman': 7.5,
 
     # ok
     'boyhood': 7,
@@ -150,6 +152,7 @@ FILMS = {
     'batman-begins': 6,
     'inglourious-basterds': 6,
     'inception': 6,
+    'the-immigrant': 6,
 
     # not worth it
     'the-incredibles': 5,
