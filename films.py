@@ -90,7 +90,7 @@ FILMS = {
     'brokeback-mountain': 8.5,
     'the-salt-of-the-earth': 8.5,
     'the-other-side-of-hope': 8.5,
-    'eternal-sunshine-of-the-spotless-mind': 8,
+    'rosmarys-baby': 8,
     'brazil': 8,
     'her': 8,
     'about-elly-2009': 8,
@@ -129,6 +129,7 @@ FILMS = {
     'dogman': 7.5,
 
     # ok
+    'eternal-sunshine-of-the-spotless-mind': 7,
     'boyhood': 7,
     'inherent-vice': 7,
     'birdman-or-the-unexpected-virtue-of-ignorance': 7,
