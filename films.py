@@ -51,6 +51,7 @@ FILMS = {
     'days-of-being-wild-re-release': 8.5,
     'chungking-express': 9.5,
     'fallen-angels': 9,
+    'happy-together': 8.8,
     'in-the-mood-for-love': 10,
 
     # personal favorites
