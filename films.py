@@ -128,6 +128,7 @@ FILMS = {
     'happy-end': 7.5,
     'three-billboards-outside-ebbing-missouri': 7.5,
     'dogman': 7.5,
+    'dead-poets-society': 7.5,
 
     # ok
     'eternal-sunshine-of-the-spotless-mind': 7,
