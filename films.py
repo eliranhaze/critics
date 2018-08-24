@@ -156,6 +156,7 @@ FILMS = {
     'inglourious-basterds': 6,
     'inception': 6,
     'the-immigrant': 6,
+    'blackkklansman': 6,
 
     # not worth it
     'the-incredibles': 5,
