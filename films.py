@@ -124,7 +124,7 @@ FILMS = {
     'me-and-earl-and-the-dying-girl': 7.5,
     'the-end-of-the-tour': 7.5,
     '45-years': 7.5,
-    'blue-valentine': 7.5,
+    'blue-jasmine': 7.5,
     'happy-end': 7.5,
     'three-billboards-outside-ebbing-missouri': 7.5,
     'dogman': 7.5,
