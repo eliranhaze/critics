@@ -159,8 +159,9 @@ class Critic(object):
         critic_scores = []
         films_scores = []
         for film, score in self.reviews.iteritems():
-            critic_scores.append(score)
-            films_scores.append(films[film])
+            if film in films:
+                critic_scores.append(score)
+                films_scores.append(films[film])
         if len(critic_scores) >= MIN_NUM_FILMS:
             scores_avg = sum(critic_scores)/len(critic_scores)
             scores_rng = max(critic_scores)-min(critic_scores)
