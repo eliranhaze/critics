@@ -91,6 +91,7 @@ FILMS = {
     'brokeback-mountain': 8.5,
     'the-salt-of-the-earth': 8.5,
     'the-other-side-of-hope': 8.5,
+    'ray-liz': 8.5,
     'rosmarys-baby': 8,
     'brazil': 8,
     'her': 8,
